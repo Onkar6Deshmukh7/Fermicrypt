@@ -7,34 +7,22 @@ import {
   getUser,
   getAllUsers,
   deleteUser,
-  deleteSessionUsers
+  deleteSessionUsers,
+  startGameForUser,
+  reconnectUser,
 } from "../controllers/userController.js";
 
 const router = express.Router();
 
-// Register a new temporary user
 router.post("/register", registerUser);
-
-// Login with username/password
 router.post("/login", loginUser);
-
-// Update progress (score, credits, completedQuestions, currentSin)
-router.put("/progress/:userId", updateProgress);
-
-// Toggle canAnswer (used when session ends or player is paused)
-router.put("/toggle/:userId", toggleCanAnswer);
-
-// Get user info
+router.post("/start-game", startGameForUser);       // start game
+router.post("/reconnect", reconnectUser);          // reconnect after disconnect
+router.patch("/:userId/progress", updateProgress);
+router.patch("/:userId/toggle", toggleCanAnswer);
 router.get("/:userId", getUser);
-
-// ✅ New route to get all users
 router.get("/", getAllUsers);
-
-// Delete a user
 router.delete("/:userId", deleteUser);
-
-// Delete sessionUsers
 router.delete("/session/:sessionId", deleteSessionUsers);
-
 
 export default router;

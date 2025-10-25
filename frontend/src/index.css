@@ -16,3 +16,30 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* in index.css or tailwind.css */
+@keyframes warp {
+  0% { transform: translateY(0) scaleY(1); opacity: 1; }
+  100% { transform: translateY(100vh) scaleY(10); opacity: 0; }
+}
+
+.animate-warp {
+  animation: warp 0.8s linear infinite;
+}
+.delay-100 {
+  animation-delay: 0.1s;
+}
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+/* Hide scrollbar for all elements */
+body {
+  overflow: hidden;       /* prevents scrolling */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;           /* Chrome, Safari, Opera */
+}

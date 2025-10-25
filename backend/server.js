@@ -2,31 +2,30 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-
-import userRoutes from "./routes/users.js";         // User routes with controller
-import questionRoutes from "./routes/questions.js"; // Question routes with controller
+import http from "http";
+import { Server } from "socket.io";
+import gameSockets from "./sockets/gameSockets.js";
 
 dotenv.config();
 const app = express();
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
-// Middlewares
-app.use(cors());
+app.use(cors({ origin: FRONTEND_URL, methods: ["GET", "POST"], credentials: true }));
 app.use(express.json());
 
-// MongoDB Connection
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => console.error("❌ MongoDB connection failed:", err));
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB connection failed:", err));
 
-// Test Route
-app.get("/", (req, res) => {
-  res.send("Server is running and MongoDB connection is active!");
+// HTTP server + Socket.IO
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: FRONTEND_URL, methods: ["GET", "POST"], credentials: true },
 });
 
-// Routes
-app.use("/api/users", userRoutes);        // All user-related routes
-app.use("/api/questions", questionRoutes); // All question-related routes
+// Socket events
+gameSockets(io);
 
-// Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
