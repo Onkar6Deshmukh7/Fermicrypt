@@ -10,6 +10,7 @@ import {
   deleteSessionUsers,
   startGameForUser,
   reconnectUser,
+  deleteAllUsers,
 } from "../controllers/userController.js";
 
 const router = express.Router();
@@ -24,5 +25,6 @@ router.get("/:userId", getUser);
 router.get("/", getAllUsers);
 router.delete("/:userId", deleteUser);
 router.delete("/session/:sessionId", deleteSessionUsers);
+router.post("/deleteAll", deleteAllUsers); // delete all users
 
 export default router;

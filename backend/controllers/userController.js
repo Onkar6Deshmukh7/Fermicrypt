@@ -181,3 +181,16 @@ export const deleteSessionUsers = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+// SIMPLY DELETE ALL USERS
+
+export const deleteAllUsers = async (req, res) => {
+  try {
+    const result = await User.deleteMany({});
+    res.status(200).json({ message: `Deleted ${result.deletedCount} users.` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete users." });
+  }
+};

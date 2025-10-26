@@ -37,7 +37,7 @@ export default function(io) {
       const targetPlayers = sessions[sessionId][0].targetPlayers;
 
       if (readyPlayers === targetPlayers) {
-        let countdown = 5;
+        let countdown = 1;
         const interval = setInterval(() => {
           io.to(sessionId).emit("countdown", { seconds: countdown });
           countdown--;
@@ -75,7 +75,6 @@ export default function(io) {
 
         // Optional: confirm back to client
         socket.emit("sinUnlocked", { username, sin });
-        console.log("sin unlocked: " + sin);
 
       } catch (err) {
         console.error("Error unlocking sin:", err);

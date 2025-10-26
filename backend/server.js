@@ -6,17 +6,25 @@ import http from "http";
 import { Server } from "socket.io";
 import gameSockets from "./sockets/gameSockets.js";
 
+import questionRoutes from "./routes/questions.js"; // import the question routes
+import userRoutes from "./routes/users.js"; 
+
 dotenv.config();
 const app = express();
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
-app.use(cors({ origin: FRONTEND_URL, methods: ["GET", "POST"], credentials: true }));
+app.use(cors({ origin: FRONTEND_URL, methods: ["GET", "POST", "PUT", "DELETE"], credentials: true }));
 app.use(express.json());
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.error("❌ MongoDB connection failed:", err));
+
+// Register the question routes under /api/questions
+app.use("/api/questions", questionRoutes);
+
+app.use("/api/users", userRoutes); // <- make sure the prefix matches
 
 // HTTP server + Socket.IO
 const server = http.createServer(app);

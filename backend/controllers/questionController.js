@@ -11,12 +11,36 @@ export const addQuestion = async (req, res) => {
   }
 };
 
-// 2️⃣ Fetch all questions
+// 2️⃣ Fetch question by sin + serialNo
 export const getQuestions = async (req, res) => {
   try {
-    const questions = await Question.find().sort({ sin: 1, serialNo: 1 });
-    res.json(questions);
+    console.log("Received query:", req.query);
+    let { sin, serialNo } = req.query;
+
+    // Fix duplicated array issue
+    if (Array.isArray(sin)) sin = sin[0];
+    if (Array.isArray(serialNo)) serialNo = serialNo[0];
+
+    console.log("Processed query:", { sin, serialNo });
+
+    // If both sin and serialNo are provided → return one question
+    if (sin && serialNo) {
+      const question = await Question.findOne({ sin, serialNo });
+      if (!question) return res.status(404).json({ error: "Question not found" });
+      return res.json(question);
+    }
+
+    // If only sin provided → return all questions of that sin
+    if (sin) {
+      const questions = await Question.find({ sin }).sort({ serialNo: 1 });
+      return res.json(questions);
+    }
+
+    // If no filters → return all questions
+    const allQuestions = await Question.find().sort({ sin: 1, serialNo: 1 });
+    res.json(allQuestions);
   } catch (err) {
+    console.error("Error in getQuestions:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -26,7 +50,8 @@ export const updateQuestion = async (req, res) => {
   try {
     const { sin, serialNo, ...updateData } = req.body;
 
-    if (!sin || !serialNo) return res.status(400).json({ error: "sin and serialNo required" });
+    if (!sin || !serialNo)
+      return res.status(400).json({ error: "sin and serialNo required" });
 
     const updatedQuestion = await Question.findOneAndUpdate(
       { sin, serialNo },
@@ -34,7 +59,8 @@ export const updateQuestion = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    if (!updatedQuestion) return res.status(404).json({ error: "Question not found" });
+    if (!updatedQuestion)
+      return res.status(404).json({ error: "Question not found" });
 
     res.json({ message: "Question updated successfully", question: updatedQuestion });
   } catch (err) {
@@ -45,13 +71,15 @@ export const updateQuestion = async (req, res) => {
 // 4️⃣ Delete a question by sin + serialNo
 export const deleteQuestion = async (req, res) => {
   try {
-    const { sin, serialNo } = req.body;
+    const { sin, serialNo } = req.query;
 
-    if (!sin || !serialNo) return res.status(400).json({ error: "sin and serialNo required" });
+    if (!sin || !serialNo)
+      return res.status(400).json({ error: "sin and serialNo required" });
 
     const deletedQuestion = await Question.findOneAndDelete({ sin, serialNo });
 
-    if (!deletedQuestion) return res.status(404).json({ error: "Question not found" });
+    if (!deletedQuestion)
+      return res.status(404).json({ error: "Question not found" });
 
     res.json({ message: "Question deleted successfully", question: deletedQuestion });
   } catch (err) {
