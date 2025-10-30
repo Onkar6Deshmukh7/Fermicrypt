@@ -1,14 +1,16 @@
+import { useState } from "react";
 import { usePlayer } from "../context/PlayerContext";
 import { useNavigate } from "react-router-dom";
 import StatsBar from "../components/StatsBar";
+import RulesModal from "../components/Rules"; // 👈 Import your modal
 
 // 🌐 Load backend URL from .env
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; 
-// (If using CRA: process.env.REACT_APP_BACKEND_URL)
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Game() {
   const { player } = usePlayer();
   const navigate = useNavigate();
+  const [showRules, setShowRules] = useState(false); // 👈 modal state
 
   const handleDoorClick = (doorName) => {
     const hasDoor = player?.unlockedPhases?.some(
@@ -50,14 +52,11 @@ export default function Game() {
               className="group relative w-52 h-52 rounded-3xl overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.1)]
               hover:scale-110 hover:shadow-[0_0_50px_rgba(255,255,255,0.3)] transition-all duration-500"
             >
-              {/* Door background */}
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-80 group-hover:opacity-100 transition-all duration-500"
                 style={{ backgroundImage: `url('${image}')` }}
               />
-              {/* Overlay */}
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-all duration-500"></div>
-              {/* Label */}
               <span className="relative z-10 text-xl font-semibold uppercase tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-fuchsia-400 to-pink-400 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
                 {label}
               </span>
@@ -74,6 +73,19 @@ export default function Game() {
           🏆 View Leaderboard
         </button>
       </div>
+
+      {/* 👇 Fixed Rules button */}
+      <button
+        onClick={() => setShowRules(true)}
+        className="fixed bottom-6 left-6 px-4 py-2 rounded-lg bg-gradient-to-r from-fuchsia-500 to-pink-500
+                   text-black font-semibold shadow-[0_0_20px_rgba(255,255,255,0.25)]
+                   hover:scale-110 transition-all duration-300 z-50"
+      >
+        Rules
+      </button>
+
+      {/* 👇 Modal */}
+      {showRules && <RulesModal onClose={() => setShowRules(false)} />}
     </div>
   );
 }
