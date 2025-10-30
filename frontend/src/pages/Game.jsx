@@ -26,7 +26,7 @@ export default function Game() {
 
   return (
     <div
-      className="h-screen flex flex-col bg-cover bg-center text-white relative overflow-hidden font-sans"
+      className="h-screen flex flex-col bg-cover bg-center text-white relative overflow-hidden"
       style={{ backgroundImage: "url('/images/homepagebg.jpeg')" }}
     >
       {/* Overlay layers */}
