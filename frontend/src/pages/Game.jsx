@@ -2,6 +2,10 @@ import { usePlayer } from "../context/PlayerContext";
 import { useNavigate } from "react-router-dom";
 import StatsBar from "../components/StatsBar";
 
+// 🌐 Load backend URL from .env
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; 
+// (If using CRA: process.env.REACT_APP_BACKEND_URL)
+
 export default function Game() {
   const { player } = usePlayer();
   const navigate = useNavigate();

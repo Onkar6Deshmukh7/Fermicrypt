@@ -5,11 +5,12 @@ import axios from "axios";
 export default function Leaderboard() {
   const [players, setPlayers] = useState([]);
   const navigate = useNavigate();
+  const API_BASE = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users");
+        const res = await axios.get(`${API_BASE}/api/users`);
         // Sort by score descending
         const sorted = res.data.sort((a, b) => b.score - a.score);
         setPlayers(sorted);
@@ -21,7 +22,7 @@ export default function Leaderboard() {
     fetchLeaderboard();
     const interval = setInterval(fetchLeaderboard, 3000); // updates every 3s
     return () => clearInterval(interval);
-  }, []);
+  }, [API_BASE]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4">

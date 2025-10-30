@@ -56,7 +56,7 @@ export const updateUser = async (req, res) => {
     if (!user) return res.status(404).json({ error: "User not found" });
 
     // ✅ Handle unlockedPhases smartly
-    if (updates.unlockedPhases && Array.isArray(updates.unlockedPhases)) {
+    if (updates.unlockedPhase && Array.isArray(updates.unlockedPhase)) {
       for (const phase of updates.unlockedPhases) {
         const existing = user.unlockedPhases.find(
           (p) => p.doorName === phase.doorName

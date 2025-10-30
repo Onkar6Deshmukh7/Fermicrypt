@@ -3,6 +3,8 @@ import HomePage from "./pages/HomePage";
 import Game from "./pages/Game";
 import Door from "./pages/Door";
 import Leaderboard from "./pages/LeaderBoard";
+import Backtrack from "./pages/hintd1q3";
+import Void from "./pages/void";
 
 export default function App() {
   return (
@@ -12,6 +14,8 @@ export default function App() {
         <Route path="/game" element={<Game />} />
         <Route path="/door/:phaseId" element={<Door />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/hintd1q3" element={<Backtrack />} />
+        <Route path="/void" element={<Void />} />
       </Routes>
     </Router>
   );

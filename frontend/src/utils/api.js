@@ -1,9 +1,11 @@
 // -----------------------------
 // ✅ USER APIs
 // -----------------------------
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
 export const registerUser = async (username) => {
   try {
-    const res = await fetch("http://localhost:5000/api/users", {
+    const res = await fetch(`${API_BASE}/api/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username }),
@@ -17,7 +19,7 @@ export const registerUser = async (username) => {
 
 export const getUser = async (username) => {
   try {
-    const res = await fetch(`http://localhost:5000/api/users/${username}`);
+    const res = await fetch(`${API_BASE}/api/users/${username}`);
     return await res.json();
   } catch (err) {
     console.error("❌ Fetch user error:", err);
@@ -30,7 +32,7 @@ export const getUser = async (username) => {
 // -----------------------------
 export const fetchQuestionsByPhase = async (phaseId) => {
   try {
-    const res = await fetch(`http://localhost:5000/api/questions/${phaseId}`);
+    const res = await fetch(`${API_BASE}/api/questions/${phaseId}`);
     return await res.json();
   } catch (err) {
     console.error("❌ Fetch questions error:", err);
@@ -40,19 +42,19 @@ export const fetchQuestionsByPhase = async (phaseId) => {
 
 export const checkAnswer = async (username, phaseId, serialNo, answer) => {
   try {
-    const res = await fetch("http://localhost:5000/api/questions/check", {
+    const res = await fetch(`${API_BASE}/api/questions/check`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, phaseId, serialNo, answer }),
     });
 
     const data = await res.json();
-    
+
     if (!res.ok) {
       console.error("❌ checkAnswer failed:", data);
       return { isCorrect: false };
     }
-    
+
     console.log("✅ checkAnswer success:", data);
     return data;
   } catch (err) {
@@ -61,7 +63,6 @@ export const checkAnswer = async (username, phaseId, serialNo, answer) => {
   }
 };
 
-
 // -----------------------------
 // ✅ SCORE Update
 // -----------------------------
@@ -69,10 +70,7 @@ import axios from "axios";
 
 export const updateScore = async (username, updateData = {}) => {
   try {
-    const res = await axios.put(
-      `http://localhost:5000/api/users/${username}`,
-      updateData
-    );
+    const res = await axios.put(`${API_BASE}/api/users/${username}`, updateData);
 
     console.log("✅ updateScore success:", res.data);
     return res.data;

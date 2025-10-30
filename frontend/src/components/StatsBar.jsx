@@ -13,12 +13,32 @@ export default function StatsBar() {
 
   return (
     <div
-      className={`w-full flex justify-between items-center px-6 py-3 
-        ${isGamePage ? "bg-blue-600 text-white" : "bg-gray-800 text-gray-100"}
-        shadow-md`}
+      className={`fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4
+        text-white z-50 select-none`}
+      style={{
+        background: "transparent",
+        pointerEvents: "none", // ensures it never blocks interactions behind it
+      }}
     >
-      <span className="font-semibold text-lg">{player.username}</span>
-      <span className="text-lg font-bold">Score: {player.score}</span>
+      <span
+        className="font-semibold text-xl tracking-wide"
+        style={{
+          textShadow: "0 0 8px rgba(255, 255, 255, 0.4)",
+        }}
+      >
+        {player.username}
+      </span>
+      <span
+        className="text-lg font-bold"
+        style={{
+          background: "linear-gradient(to right, #60a5fa, #c084fc)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          textShadow: "0 0 8px rgba(96,165,250,0.5)",
+        }}
+      >
+        Score: {player.score}
+      </span>
     </div>
   );
 }

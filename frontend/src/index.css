@@ -17,6 +17,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-body {
-  letter-spacing: 0.5px;
+body, button, a, input {
+  cursor: url('/cursors/cursor.png') 10 10, auto;
 }
