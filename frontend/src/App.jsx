@@ -4,7 +4,7 @@ import Game from "./pages/Game";
 import Door from "./pages/Door";
 import Leaderboard from "./pages/LeaderBoard";
 import Backtrack from "./pages/hintd1q3";
-import Void from "./pages/void";
+import Void from "./pages/Void";
 
 export default function App() {
   return (
