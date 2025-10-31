@@ -24,12 +24,14 @@ export default function AnswerBox({ username, phaseId, serialNo, onSubmit }) {
         setMessage("✅ Correct answer!");
         onSubmit(true);
 
+        // hide message after 1.5s
+        setTimeout(() => setMessage(""), 1500);
+
         // fetch current user data
         const userRes = await axios.get(`${backendURL}/api/users/${username}`);
         const user = userRes.data;
         const doorName = phaseId.replace("phase", "door");
 
-        // find the door being answered
         const updatedPhases = user.unlockedPhases.map((phase) => {
           if (phase.doorName === doorName) {
             return { ...phase, currentQuestion: phase.currentQuestion + 1 };
@@ -37,11 +39,9 @@ export default function AnswerBox({ username, phaseId, serialNo, onSubmit }) {
           return phase;
         });
 
-        // calculate score increment (10, 20, 30)
         const scoreAdd = serialNo * 10;
         const newScore = (user.score || 0) + scoreAdd;
 
-        // unlock next door rule
         if (doorName === "door1" && serialNo === 1) {
           const door2 = updatedPhases.find((d) => d.doorName === "door2");
           if (door2 && door2.currentQuestion === 0) door2.currentQuestion = 1;
@@ -50,25 +50,23 @@ export default function AnswerBox({ username, phaseId, serialNo, onSubmit }) {
           if (door3 && door3.currentQuestion === 0) door3.currentQuestion = 1;
         }
 
-        // update user in backend
         await axios.put(`${backendURL}/api/users/${username}`, {
           score: newScore,
           unlockedPhases: updatedPhases,
         });
 
-        console.log("🔓 Updated phases:", updatedPhases);
-
-        // ✅ immediately fetch and update player context
         const updatedUser = await axios.get(`${backendURL}/api/users/${username}`);
         setPlayer(updatedUser.data);
       } else {
         console.log("❌ Incorrect answer!");
         setMessage("❌ Incorrect answer!");
-        onSubmit(false);
+        // hide message after 1.5s
+        setTimeout(() => setMessage(""), 1500);
       }
     } catch (err) {
       console.error("⚠️ Error in handleSubmit:", err);
       setMessage("⚠️ Something went wrong");
+      setTimeout(() => setMessage(""), 2000);
     }
 
     setLoading(false);
@@ -100,7 +98,7 @@ export default function AnswerBox({ username, phaseId, serialNo, onSubmit }) {
 
       {message && (
         <p
-          className={`mt-2 text-base font-medium ${
+          className={`mt-2 text-base font-medium transition-opacity duration-500 ${
             message.includes("✅")
               ? "text-green-400"
               : message.includes("❌")
@@ -111,6 +109,6 @@ export default function AnswerBox({ username, phaseId, serialNo, onSubmit }) {
           {message}
         </p>
       )}
-    </div>  
+    </div>
   );
 }
