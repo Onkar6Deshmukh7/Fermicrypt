@@ -8,36 +8,46 @@ export default function RulesModal({ onClose }) {
       />
 
       {/* Modal content */}
-      <div className="relative z-10 max-w-3xl mx-4 p-8 rounded-2xl bg-black/80 text-white font-press
-                      shadow-[0_0_40px_rgba(255,255,255,0.15)] border border-fuchsia-700/50
-                      animate-fadeIn">
-        <h2 className="text-3xl mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 tracking-wider text-center">
+      <div
+        className="relative z-10 max-w-2xl mx-4 p-6 sm:p-8 rounded-2xl bg-black/80 text-white font-press
+                   shadow-[0_0_40px_rgba(255,255,255,0.15)] border border-fuchsia-700/50
+                   animate-fadeIn text-sm sm:text-base leading-relaxed"
+      >
+        <h2 className="text-2xl sm:text-3xl mb-5 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 tracking-wider text-center">
           ⚔️ GAME RULES ⚔️
         </h2>
 
-        <div className="space-y-4 text-lg leading-relaxed text-center">
+        <div className="space-y-3 text-center">
           <p>
-            Once you enter a <b>username</b>, remember it — that is all you’ll need for your next login.
+            Enter a <b>username</b> — that’s all you’ll need for login.
           </p>
+
           <p>
-            The game has <b>3 phases</b> with <b>3 questions each</b> of varying difficulty.
+            The game has <b>3 phases</b>, each with <b>3 questions</b> of increasing difficulty.
+            Solving one question of a phase unlocks the next.
           </p>
+
           <p>
-            Answering the <b>first question</b> unlocks the <b>second phase</b>, and so on.
+            Questions may appear as <b>text, images, or encrypted clues</b> — using hints from
+            <b>languages, codes, or cultural references</b>. Sometimes the question itself has the hint.
           </p>
+
           <p>
-            Questions may include <b>text, images, links</b>, or a combination — but every answer is a <b>single alphanumeric word</b>, concatenated if it has multiple words.
+            Answers use <b>lowercase alphabets only</b> — no numbers or symbols.
+            They can be <b>names, objects, or iconic phrases</b>, but always as a <b>single word</b>.
           </p>
+
           <p>
-            You may use <b>ANY source</b> for help. Some clues reference external knowledge — observe carefully.
+            Use <b>any source</b> for help — logic, google, gpt, collaboration, etc. 
+            Stay alert for <b>hidden hints</b> throughout the game.
           </p>
-          <p>
-            Keep your eyes peeled for hidden hints.  
-            For best immersion, use <b>fullscreen mode (F11)</b>.
+
+          <p className="text-gray-400 text-sm italic">
+            For best immersion, play in <b>fullscreen (F11)</b>.
           </p>
         </div>
 
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-8">
           <button
             onClick={onClose}
             className="px-6 py-2 rounded-xl bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-pink-500
